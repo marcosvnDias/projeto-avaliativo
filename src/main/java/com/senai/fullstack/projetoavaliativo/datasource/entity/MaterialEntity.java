@@ -4,12 +4,15 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
-@Table(name = "perfis")
+@Table(name = "materias")
 @Entity
-public class PapelEntity {
+public class MaterialEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String nome;
+
+    @ManyToOne
+    @JoinColumn(name = "id_curso", nullable = false)
+    private CursoEntity curso;
 }
