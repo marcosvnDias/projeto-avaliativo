@@ -27,8 +27,8 @@ public class NotasEntity {
     private DocenteEntity docente;
 
     @ManyToOne
-    @JoinColumn(name = "id_material", nullable = false)
-    private MaterialEntity material;
+    @JoinColumn(name = "id_materia", nullable = false)
+    private MateriaEntity materia;
 
     private Float valor;
 

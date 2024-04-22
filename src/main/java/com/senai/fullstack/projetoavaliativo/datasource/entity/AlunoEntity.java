@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @Table(name = "alunos")
@@ -25,9 +24,5 @@ public class AlunoEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
-    private DocenteEntity docente;
-
-    @ManyToOne
-    @JoinColumn(name = "id_turma", nullable = false)
-    private TurmaEntity turma;
+    private UsuarioEntity id_usuario;
 }

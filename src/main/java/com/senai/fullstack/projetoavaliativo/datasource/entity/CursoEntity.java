@@ -20,5 +20,5 @@ public class CursoEntity {
 
     @OneToMany
     @JoinColumn(nullable = false)
-    private List<MaterialEntity> materias;
+    private List<MateriaEntity> materias;
 }
