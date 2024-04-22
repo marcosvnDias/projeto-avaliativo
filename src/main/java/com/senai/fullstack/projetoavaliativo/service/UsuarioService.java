@@ -5,10 +5,13 @@ import com.senai.fullstack.projetoavaliativo.datasource.entity.UsuarioEntity;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.PapelRepository;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
@@ -16,9 +19,12 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final PapelRepository papelRepository;
 
-    public void cadastrarUsuario(@RequestBody InserirUsuarioRequest inserirUsuarioRequest) {
+    public void cadastrarUsuario(@RequestBody InserirUsuarioRequest entity) {
+        if (entity.nomePapel().equals("admin")) {
+            throw new RuntimeException("Apenas Admins podem criar usuários ");
+        }
         boolean usuarioExsite = usuarioRepository
-                .findByNomeUsuario(inserirUsuarioRequest.nomeUsuario())
+                .findByNomeUsuario(entity.nomeUsuario())
                 .isPresent();
 
         if (usuarioExsite) {
@@ -26,12 +32,12 @@ public class UsuarioService {
         }
 
         UsuarioEntity usuario = new UsuarioEntity();
-        usuario.setNomeUsuario(inserirUsuarioRequest.nomeUsuario());
+        usuario.setNomeUsuario(entity.nomeUsuario());
         usuario.setSenha(
-                bCryptEncoder.encode(inserirUsuarioRequest.senha())
+                bCryptEncoder.encode(entity.senha())
         );
         usuario.setIdPapel(
-                papelRepository.findByNome(inserirUsuarioRequest.nomePapel())
+                papelRepository.findByNome(entity.nomePapel())
                         .orElseThrow(() -> new RuntimeException("Papel inválido ou inexistente"))
         );
 

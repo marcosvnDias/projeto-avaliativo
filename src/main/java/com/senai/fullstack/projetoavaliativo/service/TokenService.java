@@ -4,6 +4,7 @@ import com.senai.fullstack.projetoavaliativo.controller.dto.request.LoginRequest
 import com.senai.fullstack.projetoavaliativo.controller.dto.response.LoginResponse;
 import com.senai.fullstack.projetoavaliativo.datasource.entity.UsuarioEntity;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.UsuarioRepository;
+import com.senai.fullstack.projetoavaliativo.infra.exception.NaoEncontrado;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,15 +27,11 @@ public class TokenService {
     public LoginResponse gerarToken(@RequestBody LoginRequest loginRequest) {
         UsuarioEntity usuarioEntity = usuarioRepository
                 .findByNomeUsuario(loginRequest.nomeUsuario())
-                .orElseThrow(()->{
-                            log.error("Erro, usuário não existe");
-                            return new RuntimeException("Erro, usuário não existe");
-                    });
+                .orElseThrow(()-> new NaoEncontrado("Erro, usuário não existe"));
 
 
         if(!usuarioEntity.senhaValida(loginRequest, bCryptEncoder)){
-            log.error("Erro, senha incorreta");
-            throw new RuntimeException("Erro, senha incorreta");
+            throw new NaoEncontrado("Erro, senha incorreta");
         }
 
         Instant now = Instant.now();
