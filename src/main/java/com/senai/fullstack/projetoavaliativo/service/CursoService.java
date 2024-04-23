@@ -8,6 +8,7 @@ import com.senai.fullstack.projetoavaliativo.datasource.entity.TurmaEntity;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.CursoRepository;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.MateriaRepository;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.TurmaRepository;
+import com.senai.fullstack.projetoavaliativo.infra.exception.FaltaAlgumDado;
 import com.senai.fullstack.projetoavaliativo.infra.exception.NaoEncontrado;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,10 @@ public class CursoService {
 
     public CursoResponse criar(InserirCursoRequest entity, String token) {
         validarPapel(token);
+
+        if (entity.nome().isEmpty()) {
+            throw new FaltaAlgumDado("Requisição inválida, falta algum dado");
+        }
 
         CursoEntity curso = new CursoEntity();
         curso.setNome(entity.nome());
@@ -72,13 +77,17 @@ public class CursoService {
     public CursoResponse atualizar(InserirCursoRequest entity, String token) {
         validarPapel(token);
 
+        if (entity.nome().isEmpty()) {
+            throw new FaltaAlgumDado("Requisição inválida, falta algum dado");
+        }
+
         CursoEntity curso = repository.findById(entity.id())
                 .orElseThrow(() -> new NaoEncontrado("Curso não encontrado pelo id: " + entity.id()));
 
         List<MateriaEntity> materias = materiaRepository.findAllByCurso_Id(curso.getId());
         List<TurmaEntity> turmas = turmaRepository.findAllByCurso_Id(curso.getId());
 
-        if (!entity.nome().isEmpty()) curso.setNome(entity.nome());
+        curso.setNome(entity.nome());
 
         if (curso.getMaterias().size() != materias.size()) {
             curso.setMaterias(materias);

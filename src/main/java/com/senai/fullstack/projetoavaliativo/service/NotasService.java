@@ -7,6 +7,7 @@ import com.senai.fullstack.projetoavaliativo.datasource.repository.AlunoReposito
 import com.senai.fullstack.projetoavaliativo.datasource.repository.DocenteRepository;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.MateriaRepository;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.NotasRepository;
+import com.senai.fullstack.projetoavaliativo.infra.exception.FaltaAlgumDado;
 import com.senai.fullstack.projetoavaliativo.infra.exception.NaoEncontrado;
 import com.senai.fullstack.projetoavaliativo.infra.exception.UsuarioNaoEProfessorException;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,10 @@ public class NotasService {
     public NotasResponse criar(InserirNotasRequest entity, String token) {
         validarPapel(token);
 
+        if (entity.nome().isEmpty() || entity.valor() == 0 || entity.data() == null ||
+            entity.id_docente() == 0 || entity.id_materia() == 0 || entity.id_aluno() == 0) {
+            throw new FaltaAlgumDado("Requisição inválida, falta algum dado");
+        }
         NotasEntity notas = new NotasEntity();
         DocenteEntity docente = docenteRepository.findById(entity.id_docente())
                 .orElseThrow(() -> new NaoEncontrado("Professor não encontrado pelo id: " + entity.id_docente()));

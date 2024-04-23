@@ -4,6 +4,7 @@ import com.senai.fullstack.projetoavaliativo.controller.dto.request.InserirUsuar
 import com.senai.fullstack.projetoavaliativo.datasource.entity.UsuarioEntity;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.PapelRepository;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.UsuarioRepository;
+import com.senai.fullstack.projetoavaliativo.infra.exception.DadoInvalido;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,7 +29,7 @@ public class UsuarioService {
                 .isPresent();
 
         if (usuarioExsite) {
-            throw new RuntimeException("Usuário já existe");
+            throw new DadoInvalido("Usuário já existe");
         }
 
         UsuarioEntity usuario = new UsuarioEntity();

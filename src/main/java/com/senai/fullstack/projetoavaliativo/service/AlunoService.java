@@ -6,6 +6,7 @@ import com.senai.fullstack.projetoavaliativo.datasource.entity.AlunoEntity;
 import com.senai.fullstack.projetoavaliativo.datasource.entity.UsuarioEntity;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.AlunoRepository;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.UsuarioRepository;
+import com.senai.fullstack.projetoavaliativo.infra.exception.FaltaAlgumDado;
 import com.senai.fullstack.projetoavaliativo.infra.exception.NaoEncontrado;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,9 @@ public class AlunoService {
                 .orElseThrow(() -> new NaoEncontrado("Usuário não encontrado pelo id: " + usuarioId));
 
         AlunoEntity aluno = new AlunoEntity();
+        if (entity.nome().isEmpty() || entity.data_nascimento() == null) {
+            throw new FaltaAlgumDado("Requisição inválida, falta algum dado");
+        }
         aluno.setNome(entity.nome());
         aluno.setData_nascimento(entity.data_nascimento());
         aluno.setId_usuario(usuario);
@@ -63,11 +67,14 @@ public class AlunoService {
     public AlunoResponse atualizar(InserirAlunoRequest entity, String token) {
         validarPapel(token);
 
+        if (entity.nome().isEmpty() || entity.data_nascimento() == null) {
+            throw new FaltaAlgumDado("Requisição inválida, falta algum dado");
+        }
         AlunoEntity aluno = repository.findById(entity.id())
                 .orElseThrow(() -> new NaoEncontrado("Aluno não encontrado pelo id: " + entity.id()));
 
-        if (!entity.nome().isEmpty()) aluno.setNome(entity.nome());
-        if (entity.data_nascimento() != null) aluno.setData_nascimento(entity.data_nascimento());
+        aluno.setNome(entity.nome());
+        aluno.setData_nascimento(entity.data_nascimento());
         repository.save(aluno);
 
         return new AlunoResponse(
