@@ -104,6 +104,7 @@ public class AlunoService {
     }
 
     private void validarPapel(String token, int num) {
+        log.info("Falidando permições");
         String nomePerfil =  tokenService.buscarCampo(token, "token");
         if (
                 !Objects.equals(nomePerfil, "admin") && num > -1

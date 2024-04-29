@@ -41,13 +41,13 @@ public class TurmaController {
     public ResponseEntity<List<TurmaEntity>> getAll(
             @RequestHeader(name = "Authorization") String token
     ) {
-        log.info("POST /turmas -> Início");
+        log.info("GET /turmas -> Início");
 
         List<TurmaEntity> entities = service.listarTodos(token);
-        log.info("POST /turmas -> {} total", entities.size());
+        log.info("GET /turmas -> {} total", entities.size());
 
-        log.info("POST /turmas -> 200 OK");
-        log.debug("POST /turmas -> Response Body:\n{}\n", JsonUtil.objectToJson(entities));
+        log.info("GET /turmas -> 200 OK");
+        log.debug("GET /turmas -> Response Body:\n{}\n", JsonUtil.objectToJson(entities));
 
         return ResponseEntity.ok(entities);
     }

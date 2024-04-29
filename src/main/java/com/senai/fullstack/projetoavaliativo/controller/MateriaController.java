@@ -41,13 +41,13 @@ public class MateriaController {
     public ResponseEntity<List<MateriaEntity>> getAll(
             @RequestHeader(name = "Authorization") String token
     ) {
-        log.info("POST /matérias -> Início");
+        log.info("GET /matérias -> Início");
 
         List<MateriaEntity> entities = service.listarTodos(token);
-        log.info("POST /matérias -> {} total", entities.size());
+        log.info("GET /matérias -> {} total", entities.size());
 
-        log.info("POST /matérias -> 200 OK");
-        log.debug("POST /matérias -> Response Body:\n{}\n", JsonUtil.objectToJson(entities));
+        log.info("GET /matérias -> 200 OK");
+        log.debug("GET /matérias -> Response Body:\n{}\n", JsonUtil.objectToJson(entities));
 
         return ResponseEntity.ok(entities);
     }
