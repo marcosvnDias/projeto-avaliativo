@@ -4,6 +4,7 @@ import com.senai.fullstack.projetoavaliativo.controller.dto.request.InserirTurma
 import com.senai.fullstack.projetoavaliativo.controller.dto.response.TurmaResponse;
 import com.senai.fullstack.projetoavaliativo.datasource.entity.*;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.*;
+import com.senai.fullstack.projetoavaliativo.infra.exception.FaltaAlgumDado;
 import com.senai.fullstack.projetoavaliativo.infra.exception.NaoEncontrado;
 import com.senai.fullstack.projetoavaliativo.infra.exception.UsuarioNaoEProfessorException;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,10 @@ public class TurmaService {
     public TurmaResponse criar(InserirTurmaRequest entity, String token) {
         validarPapel(token);
         TurmaEntity turma = new TurmaEntity();
+        if (entity.nome().isEmpty() || entity.idProfessor() > -1 ||
+            entity.idCurso() > -1 || entity.alunos().isEmpty()) {
+            throw new FaltaAlgumDado("Requisição inválida, falta algum dado");
+        }
         turma.setNome(entity.nome());
 
         CursoEntity curso = cursoRepository.findById(entity.idCurso())
@@ -91,6 +96,11 @@ public class TurmaService {
     public TurmaResponse atualizar(InserirTurmaRequest entity, String token) {
         validarPapel(token);
 
+        if (entity.nome().isEmpty() || entity.idProfessor() == 0 || entity.idCurso() == 0 ||
+                entity.alunos().isEmpty()) {
+            throw new FaltaAlgumDado("Requisição inválida, falta algum dado");
+        }
+
         TurmaEntity turma = repository.findById(entity.idTurma())
                 .orElseThrow(() -> new NaoEncontrado("Turma não encontrada pelo id: " + entity.idTurma()));
 
@@ -104,13 +114,10 @@ public class TurmaService {
         DocenteEntity docente = docenteRepository.findById(entity.idProfessor())
                 .orElseThrow(() -> new NaoEncontrado("Professor não encontrado pelo id" + entity.idProfessor()));
 
-        if (!entity.nome().isEmpty()) turma.setNome(entity.nome());
-
-        if (entity.idCurso() != 0) turma.setCurso(curso);
-
-        if (!entity.alunos().isEmpty()) turma.setAlunos(entity.alunos());
-
-        if (entity.idProfessor() != 0) turma.setDocente(docente);
+        turma.setNome(entity.nome());
+        turma.setCurso(curso);
+        turma.setAlunos(entity.alunos());
+        turma.setDocente(docente);
 
         repository.save(turma);
 

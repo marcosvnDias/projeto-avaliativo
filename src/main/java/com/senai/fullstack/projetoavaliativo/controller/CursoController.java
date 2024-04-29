@@ -41,13 +41,13 @@ public class CursoController {
     public ResponseEntity<List<CursoEntity>> getAll(
             @RequestHeader(name = "Authorization") String token
     ) {
-        log.info("POST /cursos -> Início");
+        log.info("GET /cursos -> Início");
 
         List<CursoEntity> entities = service.listarTodos(token);
-        log.info("POST /cursos -> {} total", entities.size());
+        log.info("GET /cursos -> {} total", entities.size());
 
-        log.info("POST /cursos -> 200 OK");
-        log.debug("POST /cursos -> Response Body:\n{}\n", JsonUtil.objectToJson(entities));
+        log.info("GET /cursos -> 200 OK");
+        log.debug("GET /cursos -> Response Body:\n{}\n", JsonUtil.objectToJson(entities));
 
         return ResponseEntity.ok(entities);
     }

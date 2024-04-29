@@ -6,6 +6,7 @@ import com.senai.fullstack.projetoavaliativo.datasource.entity.CursoEntity;
 import com.senai.fullstack.projetoavaliativo.datasource.entity.MateriaEntity;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.CursoRepository;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.MateriaRepository;
+import com.senai.fullstack.projetoavaliativo.infra.exception.FaltaAlgumDado;
 import com.senai.fullstack.projetoavaliativo.infra.exception.NaoEncontrado;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,10 @@ public class MateriaService {
 
     public MateriaResponse criar(InserirMateriaRequest entity, String token) {
         validarPapel(token);
+
+        if (entity.nome().isEmpty() || entity.id_curso() == 0) {
+            throw new FaltaAlgumDado("Requisição inválida, falta algum dado");
+        }
 
         CursoEntity curso = cursoRepository.findById(entity.id_curso())
                 .orElseThrow(() -> new NaoEncontrado("Curso não encontrado pelo id: " + entity.id_curso()));
@@ -56,6 +61,11 @@ public class MateriaService {
 
     public MateriaResponse atualizar(InserirMateriaRequest entity, String token) {
         validarPapel(token);
+
+        if (entity.nome().isEmpty() || entity.id_curso() == 0) {
+            throw new FaltaAlgumDado("Requisição inválida, falta algum dado");
+        }
+
         MateriaEntity materia = repository.findById(entity.id())
                 .orElseThrow(() -> new NaoEncontrado("Matéria não encontrada pelo id: " + entity.id()));
 

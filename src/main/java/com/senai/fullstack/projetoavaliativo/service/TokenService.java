@@ -22,7 +22,7 @@ public class TokenService {
     private final JwtEncoder jwtEncoder;
     private final JwtDecoder jwtDencoder;
     private final UsuarioRepository usuarioRepository;
-    private static long TEMPO_EXPIRACAO = 36000L;
+    private static long TEMPO_EXPIRACAO = 360000L;
 
     public LoginResponse gerarToken(@RequestBody LoginRequest loginRequest) {
         UsuarioEntity usuarioEntity = usuarioRepository

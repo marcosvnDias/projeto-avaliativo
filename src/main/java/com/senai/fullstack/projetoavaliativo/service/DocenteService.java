@@ -6,6 +6,7 @@ import com.senai.fullstack.projetoavaliativo.datasource.entity.DocenteEntity;
 import com.senai.fullstack.projetoavaliativo.datasource.entity.UsuarioEntity;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.DocenteRepository;
 import com.senai.fullstack.projetoavaliativo.datasource.repository.UsuarioRepository;
+import com.senai.fullstack.projetoavaliativo.infra.exception.FaltaAlgumDado;
 import com.senai.fullstack.projetoavaliativo.infra.exception.NaoEncontrado;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +23,13 @@ public class DocenteService {
     private final UsuarioRepository usuarioRepository;
     private final TokenService tokenService;
     public DocenteResponse criar(InserirDocenteRequest entity, String token) {
-
         validarPapel(token);
+
+        if (entity.nome().isEmpty() || entity.data_entrada() == null ||
+            entity.idUsuario() == 0) {
+            throw new FaltaAlgumDado("Requisição inválida, falta algum dado");
+        }
+
         Integer usuarioId = Integer.valueOf(
                 tokenService.buscarCampo(token, "sub")
         );
@@ -65,6 +71,11 @@ public class DocenteService {
     public DocenteEntity atualizar(InserirDocenteRequest entity, String token) {
         validarPapel(token);
 
+        if (entity.nome().isEmpty() || entity.data_entrada() == null ||
+                entity.idUsuario() == 0) {
+            throw new FaltaAlgumDado("Requisição inválida, falta algum dado");
+        }
+
         int usuarioId = Integer.parseInt(
                 tokenService.buscarCampo(token, "sub")
         );
@@ -72,8 +83,8 @@ public class DocenteService {
         DocenteEntity docente = repository.findById(entity.id())
                 .orElseThrow(() -> new NaoEncontrado("Docente não encontrado pelo id: " + usuarioId));
 
-        if (!entity.nome().isEmpty()) docente.setNome(entity.nome());
-        if (entity.data_entrada() != null) docente.setData_entrada(entity.data_entrada());
+        docente.setNome(entity.nome());
+        docente.setData_entrada(entity.data_entrada());
         repository.save(docente);
 
         return docente;
