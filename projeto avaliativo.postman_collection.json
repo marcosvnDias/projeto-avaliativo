@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "e53e3793-acac-45e7-b070-3fc5b5bec03b",
+		"name": "projeto avaliativo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33304280"
+	},
+	"item": [
+		{
+			"name": "cadastro",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nomeUsuario\" : \"Marcos\",\n    \"senha\" : \"123mark\",\n    \"nomePapel\" : \"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/cadastro",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"cadastro"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nomeUsuario\" : \"Marcos\",\n    \"senha\" : \"123mark\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "alunos",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJNYXJjb3NEaWFzIiwic3ViIjoiMSIsImV4cCI6MTcxNDcxNjY3OCwiaWF0IjoxNzE0MzU2Njc4LCJzY29wZSI6ImFkbWluIn0.yp2zwkSSKPOWopkgcGjg9s7E2syG0dBAT9SZ4jsC0Nka6MIZwJ_nd7UAgYIxNmJ5nt9HpHt1NjrgDhpxOCI7IsD_FVxrNxInA_A9l57i3IvRcGW68wB5Zddax_S6MsFP0KNrWwMlDoZVNsVa0PnJWMkRwBJaqr_DgC_dUoxl5r4ASJOEdSindc0mIt2F7kemi7KsQtwZ976UHmImqc4SnCiwjUfuERw9YTGBdo3MSLuLY0eBaQ_T3534otyFW1nUWONQjTDg35S3SV2K9EcqTdHMpink_mQIgLNxB_8IysL_QfoZcu5JzlvmXJhMvtOjboP3Tmtoe8SG5Lq4-G-16w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nome\" : \"Marcos\",\n    \"data_nascimento\" : \"2005-08-10\",\n    \"id_usuario\" : 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/alunos",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"alunos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "alunos",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJNYXJjb3NEaWFzIiwic3ViIjoiMSIsImV4cCI6MTcxNDcxNjY3OCwiaWF0IjoxNzE0MzU2Njc4LCJzY29wZSI6ImFkbWluIn0.yp2zwkSSKPOWopkgcGjg9s7E2syG0dBAT9SZ4jsC0Nka6MIZwJ_nd7UAgYIxNmJ5nt9HpHt1NjrgDhpxOCI7IsD_FVxrNxInA_A9l57i3IvRcGW68wB5Zddax_S6MsFP0KNrWwMlDoZVNsVa0PnJWMkRwBJaqr_DgC_dUoxl5r4ASJOEdSindc0mIt2F7kemi7KsQtwZ976UHmImqc4SnCiwjUfuERw9YTGBdo3MSLuLY0eBaQ_T3534otyFW1nUWONQjTDg35S3SV2K9EcqTdHMpink_mQIgLNxB_8IysL_QfoZcu5JzlvmXJhMvtOjboP3Tmtoe8SG5Lq4-G-16w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/alunos",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"alunos"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
