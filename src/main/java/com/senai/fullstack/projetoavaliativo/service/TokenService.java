@@ -22,7 +22,6 @@ public class TokenService {
     private final JwtEncoder jwtEncoder;
     private final JwtDecoder jwtDencoder;
     private final UsuarioRepository usuarioRepository;
-    private static long TEMPO_EXPIRACAO = 360000L;
 
     public LoginResponse gerarToken(@RequestBody LoginRequest loginRequest) {
         UsuarioEntity usuarioEntity = usuarioRepository
@@ -37,13 +36,15 @@ public class TokenService {
         Instant now = Instant.now();
         String scope = usuarioEntity.getIdPapel().getNome();
 
+        long TEMPO_EXPIRACAO = 360000L;
         JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("marcosDias")
+                .issuer("MarcosDias")
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(TEMPO_EXPIRACAO))
                 .subject(String.valueOf(usuarioEntity.getId()))
                 .claim("scope", scope)
                 .build();
+
 
         String valorJWT = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
